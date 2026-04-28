@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const user=useSelector(state => state.auth.user)
+  const loading=useSelector(state => state.auth.loading)
   const {handleLogin}=useAuth()
   const navigate=useNavigate()
   const handleChange = (event) => {
@@ -23,6 +27,10 @@ const Login = () => {
     navigate("/")
     // TODO: connect to auth API
   };
+
+  if(!loading && user){
+    return <Navigate to='/' replace />
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
